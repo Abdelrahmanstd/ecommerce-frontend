@@ -1,0 +1,53 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>SubCategories</h2>
+    <button class="btn btn-primary" (click)="openAddForm()">Add SubCategory</button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submitForm()" *ngIf="formMode" class="border p-4 rounded shadow-sm mb-4">
+    <h5>{{ formMode === 'add' ? 'Add SubCategory' : 'Edit SubCategory' }}</h5>
+
+    <div class="mb-3">
+      <label>Name</label>
+      <input type="text" class="form-control" formControlName="name" />
+      <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched" class="text-danger">
+        Name is required
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label>Category</label>
+      <select class="form-select" formControlName="category">
+        <option value="">اختر تصنيف</option>
+        <option *ngFor="let cat of categories" [value]="cat._id">{{ cat.name }}</option>
+      </select>
+      <div *ngIf="form.get('category')?.invalid && form.get('category')?.touched" class="text-danger">
+        Category is required
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-success" [disabled]="form.invalid">
+      {{ formMode === 'add' ? 'Add' : 'Update' }}
+    </button>
+  </form>
+
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let sub of subCategories">
+        <td>{{ sub.name }}</td>
+        <td>{{ sub.category?.name }}</td>
+        <td>
+          <button class="btn btn-sm btn-warning me-2" (click)="openEditForm(sub)">Edit</button>
+          <button class="btn btn-sm btn-danger" (click)="deleteSubCategory(sub._id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

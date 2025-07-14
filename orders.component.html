@@ -1,0 +1,43 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Orders</h2>
+
+  <table class="table table-bordered table-hover">
+    <thead>
+  <tr>
+    <th>User</th>
+    <th>Products</th>
+    <th>Total</th>
+    <th>Status</th>
+    <th>Actions</th>
+  </tr>
+</thead>
+    <tbody>
+      <tr *ngFor="let order of orders">
+        <td>{{ order.user?.name }}</td>
+        <td>
+          <ul class="mb-0">
+            <li *ngFor="let item of order.items">
+              {{ item.product?.name }} (x{{ item.quantity }}) - {{ item.price }} جنيه
+            </li>
+          </ul>
+        </td>
+        <td>{{ order.totalPrice }} جنيه</td>
+        <td>
+         <select class="form-select"
+        [value]="order.status"
+        #statusSelect
+        (change)="changeStatus(order._id, statusSelect.value)">
+  <option value="pending">Pending</option>
+  <option value="confirmed">Confirmed</option>
+  <option value="shipped">Shipped</option>
+  <option value="delivered">Delivered</option>
+  <option value="cancelled">Cancelled</option>
+</select>
+        </td>
+        <td>
+          <button class="btn btn-danger btn-sm" (click)="deleteOrder(order._id)">حذف</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

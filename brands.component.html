@@ -1,0 +1,53 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Brands</h2>
+    <button class="btn btn-primary" (click)="openAddForm()">Add Brand</button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="submitForm()" *ngIf="formMode" class="border p-4 rounded shadow-sm mb-4">
+    <h5>{{ formMode === 'add' ? 'Add Brand' : 'Edit Brand' }}</h5>
+
+    <div class="mb-3">
+      <label>Name</label>
+      <input type="text" class="form-control" formControlName="name" />
+      <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched" class="text-danger">Name is required</div>
+    </div>
+
+    <div class="mb-3">
+      <label>Description</label>
+      <textarea rows="3" class="form-control" formControlName="description"></textarea>
+      <div *ngIf="form.get('description')?.invalid && form.get('description')?.touched" class="text-danger">Description is required</div>
+    </div>
+
+    <div class="mb-3">
+      <label>Image</label>
+      <input type="file" class="form-control" (change)="onFileChange($event)" [required]="formMode === 'add'" />
+    </div>
+
+    <button type="submit" class="btn btn-success" [disabled]="form.invalid">
+      {{ formMode === 'add' ? 'Add' : 'Update' }}
+    </button>
+  </form>
+
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let brand of brands">
+        <td><img [src]="getImageUrl(brand.image)" width="60" height="60" /></td>
+        <td>{{ brand.name }}</td>
+        <td>{{ brand.description }}</td>
+        <td>
+          <button class="btn btn-sm btn-warning me-2" (click)="openEditForm(brand)">Edit</button>
+          <button class="btn btn-sm btn-danger" (click)="deleteBrand(brand._id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
